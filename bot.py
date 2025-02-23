@@ -3,6 +3,8 @@ import threading
 import time
 
 from aiogram import Bot, Dispatcher
+from aiogram.client.bot import DefaultBotProperties
+from aiogram.enums import ParseMode
 from config_reader import config
 from middleware import ChatActionMiddleware, AccessMiddleware, CooldownMiddleware, MediaGroupMiddleware, CounterMiddleware
 from misc.botless_layer import CommandRegistrationHijacker
@@ -63,7 +65,7 @@ def initialize(dp, bot, threaded=True):
   load_module(dp, bot, 'extensions')
 
 def main(api=False):
-  bot = Bot(token=config.bot_token.get_secret_value(), parse_mode="HTML")
+  bot = Bot(token=config.bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
   logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s',)
   initialize(dp, bot, config.threaded_initialization)
   if api:
