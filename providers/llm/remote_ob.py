@@ -50,10 +50,10 @@ class RemoteLLM(AbstractLLM):
       await self.run_llm_service()
     data = {
       'prompt': prompt,
-      'max_length': length,
       **model_params,
     }
-    error, response = await self.remote_llm_api('POST', 'api/v1/generate', data)
+    await self.remote_llm_api('POST', 'api/extra/generate/stream', data)
+    error, response = await self.remote_llm_api('GET', 'api/extra/generate/check', {})
     if not error:
       response = response.get('results')[0].get('text')
       logger.info(response)
